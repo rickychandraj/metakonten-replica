@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0e0e10; --card: #151517; --card-2: #1c1c1f; --border: #2a2a2e; --border-soft: #222226;
+    --fg: #f4f4f5; --muted: #a1a1aa; --dim: #71717a;
+    --accent: #7c3aed; --accent-2: #a78bfa; --accent-soft: rgba(124,58,237,.18);
+    --orange: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px;
+    padding: 0 16px 40px;
+  }
+  button, input, textarea { font: inherit; color: inherit; }
+  svg { display: block; }
+  .wrap { max-width: 1216px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 22px 28px 28px; border-radius: 0 0 20px 20px;
+    background:
+      radial-gradient(60% 120% at 75% 0%, rgba(110,40,160,.55), transparent 70%),
+      radial-gradient(50% 90% at 100% 100%, rgba(150,30,110,.45), transparent 70%),
+      linear-gradient(180deg, #1d0f33 0%, #170b28 100%);
+  }
+  .hero .date { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: #d4d4d8; text-transform: uppercase; }
+  .hero h1 { margin: 6px 0 14px; font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
+  .hero p { margin: 0 0 8px; font-size: 14px; color: #e4e4e7; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .stat {
+    padding: 10px 12px; border-radius: 10px;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16);
+  }
+  .stat b { display: block; font-size: 24px; font-weight: 700; line-height: 1.2; }
+  .stat span { font-size: 11px; color: #d4d4d8; }
+
+  /* Layout */
+  .grid { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; margin-top: 24px; align-items: start; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+  .col { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Profile card */
+  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 22px 20px 20px; border-bottom: 1px solid var(--border-soft); }
+  .toggle { display: flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; cursor: pointer; font-size: 16px; font-weight: 600; }
+  .toggle svg { color: var(--dim); transition: transform .2s; }
+  .collapsed .toggle svg { transform: rotate(-90deg); }
+  .collapsed .card-head { border-bottom: 0; }
+  .collapsed .section { display: none; }
+  .progress { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+  .bar { width: 96px; height: 5px; border-radius: 99px; background: var(--border); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent-2); border-radius: inherit; transition: width .3s; }
+  .btn-save {
+    background: #3b1d73; color: #c4b5fd; border: 1px solid #5b34a8; border-radius: 8px;
+    padding: 7px 13px; font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .btn-save:disabled { opacity: .75; cursor: default; }
+  .btn-save:not(:disabled) { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .section { padding: 18px 20px 20px; border-bottom: 1px solid var(--border-soft); }
+  .section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+  .ico {
+    width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px;
+    display: grid; place-items: center; background: #221c33; color: #c4b5fd;
+  }
+  .sec-head h3 { margin: 0; font-size: 14px; font-weight: 600; }
+  .sec-head p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+  .sec-head .count { margin-left: auto; font-size: 12px; color: var(--muted); }
+
+  .textbox { background: var(--card-2); border-radius: 10px; padding: 10px 10px 8px 14px; }
+  .textbox textarea {
+    width: 100%; min-height: 170px; resize: vertical; border: 0; outline: 0; background: transparent;
+    font-size: 14px; line-height: 1.6; padding: 4px 0 0;
+  }
+  .textbox-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px;
+    background: #2a2a2f; border: 0; font-size: 11px; font-weight: 500; cursor: pointer;
+  }
+  .chip:hover { background: #34343a; }
+  .char { font-size: 11px; color: var(--dim); }
+  .char.over { color: #f87171; }
+
+  .add-row {
+    display: flex; align-items: center; gap: 4px; padding: 4px; border-radius: 10px;
+    background: var(--card-2); border: 1px solid var(--border-soft);
+  }
+  .plat { width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; border: 0; background: none; color: var(--dim); cursor: pointer; }
+  .plat:hover { color: var(--fg); }
+  .plat.on { background: #34343a; color: var(--fg); }
+  .add-row .sep { width: 1px; height: 22px; background: var(--border); margin: 0 6px; }
+  .add-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; font-size: 14px; }
+  .add-row input::placeholder { color: var(--dim); }
+  .btn-add {
+    display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; border-radius: 8px; border: 0;
+    background: var(--accent); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .btn-add:hover { background: #8b4cf5; }
+
+  .list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; }
+  .avatar { position: relative; width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 600; background: linear-gradient(135deg, #8b5cf6, #d946ef); }
+  .avatar .badge { position: absolute; right: -3px; bottom: -3px; width: 15px; height: 15px; border-radius: 50%; background: #0e0e10; border: 1px solid var(--border); display: grid; place-items: center; }
+  .item .who { flex: 1; min-width: 0; }
+  .item .who b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item .who span { font-size: 11px; color: var(--muted); }
+  .open {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 7px;
+    background: #2e1a56; border: 1px solid #4c2f8a; color: #ddd6fe; font-size: 12px; font-weight: 500; text-decoration: none;
+  }
+  .open:hover { background: #3b2270; }
+  .remove { border: 0; background: none; color: var(--dim); cursor: pointer; padding: 4px; border-radius: 6px; }
+  .remove:hover { color: var(--fg); background: #222226; }
+
+  /* Right column */
+  .side { padding: 18px 20px; }
+  .side-head { display: flex; align-items: center; gap: 12px; }
+  .side-head h3 { margin: 0; font-size: 14px; font-weight: 600; }
+  .side-head p { margin: 1px 0 0; font-size: 12px; color: var(--muted); }
+  .side-head a { margin-left: auto; display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 600; color: var(--accent-2); text-decoration: none; }
+  .side-head a:hover { color: #c4b5fd; }
+  .empty { text-align: center; color: var(--muted); padding: 24px 0 22px; }
+  .event { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .day { width: 44px; flex-shrink: 0; text-align: center; border: 1px solid var(--border); border-radius: 8px; padding: 5px 0 4px; }
+  .day small { display: block; font-size: 9px; font-weight: 600; color: var(--muted); }
+  .day b { font-size: 15px; }
+  .event .info { flex: 1; min-width: 0; }
+  .event .info b { display: block; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .event .meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 11px; color: var(--muted); }
+  .event .meta .st { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); }
+  .event .pf { width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--border); display: grid; place-items: center; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0;
+    background: #27272a; border: 1px solid var(--border); padding: 9px 14px; border-radius: 8px; font-size: 13px;
+    transition: .2s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 980px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .hero { padding: 18px 16px 20px; }
+    .hero h1 { font-size: 24px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .card-head, .section, .side { padding-left: 14px; padding-right: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="date" id="today"></div>
+    <h1>Welcome back, <span id="username">rickychandraj</span> 👋</h1>
+    <p>Here's your content pipeline at a glance.</p>
+    <div class="stats">
+      <div class="stat"><b>2</b><span>In progress</span></div>
+      <div class="stat"><b>0</b><span>Ready to post</span></div>
+      <div class="stat"><b>0</b><span>Scheduled</span></div>
+      <div class="stat"><b>0</b><span>Posted</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- Tentang Akun Kamu -->
+    <section class="card" id="profile">
+      <div class="card-head">
+        <div>
+          <button class="toggle" id="toggle" aria-expanded="true">
+            Tentang Akun Kamu
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="progress"><div class="bar"><i id="bar"></i></div><span id="pct">0% selesai</span></div>
+        </div>
+        <button class="btn-save" id="save" disabled>Save</button>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><h3>Penonton Kamu</h3><p>Kamu bikin konten untuk siapa dan mau ngomongin apa?</p></div>
+        </div>
+        <div class="textbox">
+          <textarea id="audience" maxlength="500" placeholder="Ceritakan target penonton dan topik konten kamu..."></textarea>
+          <div class="textbox-foot">
+            <button class="chip" id="chip-audience"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Audience</button>
+            <span class="char" id="char">0/500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-list="accounts" data-max="5">
+        <div class="sec-head">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg></div>
+          <div><h3>Akun Kamu</h3><p>Akun sosial media yang kamu gunakan untuk posting konten kamu.</p></div>
+          <span class="count"></span>
+        </div>
+        <form class="add-row"></form>
+        <ul class="list"></ul>
+      </div>
+
+      <div class="section" data-list="references" data-max="5">
+        <div class="sec-head">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+          <div><h3>Referensi</h3><p>Siapa saja kreator lain yang jadi referensi kamu baik dari segi topik ataupun visual?</p></div>
+          <span class="count"></span>
+        </div>
+        <form class="add-row"></form>
+        <ul class="list"></ul>
+      </div>
+    </section>
+
+    <!-- Right column -->
+    <div class="col">
+      <section class="card side">
+        <div class="side-head">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 2 2 4-4"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/></svg></div>
+          <h3>Fokus Hari Ini</h3>
+          <a href="#">Lihat semua <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+        </div>
+        <div class="empty">Belum ada deadline hari ini</div>
+      </section>
+
+      <section class="card side">
+        <div class="side-head">
+          <div class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg></div>
+          <div><h3>Timeline Mendatang</h3><p>Tanggal-tanggal penting</p></div>
+          <a href="#">Lihat Kalender <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+        </div>
+        <div class="event">
+          <div class="day"><small>NOV</small><b>4</b></div>
+          <div class="info">
+            <b title="Cara bikin ide konten pake Claude secara GRATIS">Cara bikin ide konten pake Claude secara GRATIS</b>
+            <div class="meta">
+              <span class="st"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#f59e0b" stroke-width="2.5"/><path d="M12 3a9 9 0 0 1 0 18z" fill="#f59e0b"/></svg>Editing</span>
+              <span>·</span><span>Publish</span>
+            </div>
+          </div>
+          <div class="pf" data-icon="instagram"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const ICONS = {
+    tiktok: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.7a4.8 4.8 0 0 1-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 1 1-2-2.7V9.5a6.3 6.3 0 1 0 5.4 6.2V8.8a8.2 8.2 0 0 0 4.8 1.5V6.9a4.8 4.8 0 0 1-1-.2z"/></svg>',
+    instagram: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>',
+    youtube: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15V9l5.8 3-5.8 3z"/></svg>'
+  };
+  const NAMES = { tiktok: 'TikTok', instagram: 'Instagram', youtube: 'YouTube' };
+  const URLS = { tiktok: u => `https://www.tiktok.com/@${u}`, instagram: u => `https://www.instagram.com/${u}/`, youtube: u => `https://www.youtube.com/@${u}` };
+  const plus = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+  const arrow = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>';
+  const cross = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+
+  const DEFAULTS = {
+    audience: "Indonesian SME owners, creator-founders, and non-technical professionals who want to use AI in their business.\n\nTheir problem: stuck in manual, repetitive work, overwhelmed by AI hype, and unsure how to turn AI into real time and revenue without making their business feel robotic. Main topics: AI automation and agents, practical AI systems for business, making money with AI, and build logs from running my AI company. Angle: optimize the machine work, protect the human work.",
+    accounts: [{ platform: 'instagram', username: 'rickychandra.j' }],
+    references: [
+      { platform: 'tiktok', username: 'contoh.kreator1' },
+      { platform: 'instagram', username: 'contoh.kreator2' },
+      { platform: 'youtube', username: 'contoh.kreator3' },
+      { platform: 'instagram', username: 'contoh.kreator4' }
+    ],
+    collapsed: false
+  };
+  const KEY = 'content-dashboard-profile';
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  let state = Object.assign(structuredClone(DEFAULTS), saved || {});
+  let snapshot = JSON.stringify(state);
+
+  const $ = s => document.querySelector(s);
+  const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  $('#today').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).replace(',', '');
+  document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = ICONS[el.dataset.icon]);
+
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  function markDirty() {
+    $('#save').disabled = JSON.stringify(state) === snapshot;
+    const done = [state.audience.trim().length > 0, state.accounts.length > 0, state.references.length > 0].filter(Boolean).length;
+    const pct = Math.round(done / 3 * 100);
+    $('#bar').style.width = pct + '%';
+    $('#pct').textContent = pct + '% selesai';
+  }
+
+  // Audience
+  const ta = $('#audience');
+  ta.value = state.audience;
+  const updateChar = () => {
+    $('#char').textContent = `${ta.value.length}/500`;
+    $('#char').classList.toggle('over', ta.value.length >= 500);
+  };
+  ta.addEventListener('input', () => { state.audience = ta.value; updateChar(); markDirty(); });
+  $('#chip-audience').addEventListener('click', () => {
+    const ins = (ta.value && !ta.value.endsWith('\n') ? '\n\n' : '') + 'Audience: ';
+    if (ta.value.length + ins.length > 500) return toast('Batas 500 karakter tercapai');
+    ta.value += ins; ta.dispatchEvent(new Event('input')); ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  });
+  updateChar();
+
+  // Account lists
+  document.querySelectorAll('[data-list]').forEach(sec => {
+    const key = sec.dataset.list, max = +sec.dataset.max;
+    const form = sec.querySelector('form'), list = sec.querySelector('.list'), count = sec.querySelector('.count');
+    let platform = 'tiktok';
+
+    form.innerHTML = Object.keys(ICONS).map(p => `<button type="button" class="plat" data-p="${p}" title="${NAMES[p]}">${ICONS[p]}</button>`).join('') +
+      `<span class="sep"></span><input placeholder="@ username" autocomplete="off"><button class="btn-add" type="submit">${plus}Add</button>`;
+    const input = form.querySelector('input');
+
+    const setPlatform = p => {
+      platform = p;
+      form.querySelectorAll('.plat').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+    };
+    form.querySelectorAll('.plat').forEach(b => b.addEventListener('click', () => { setPlatform(b.dataset.p); input.focus(); }));
+    setPlatform('tiktok');
+
+    function render() {
+      const items = state[key];
+      count.textContent = `${items.length}/${max}`;
+      list.innerHTML = items.map((a, i) => `
+        <li class="item">
+          <div class="avatar">${esc(a.username.slice(0, 2).toUpperCase())}<span class="badge">${ICONS[a.platform].replace(/width="15" height="15"/, 'width="9" height="9"')}</span></div>
+          <div class="who"><b>@${esc(a.username)}</b><span>${NAMES[a.platform]}</span></div>
+          <a class="open" href="${URLS[a.platform](encodeURIComponent(a.username))}" target="_blank" rel="noopener">Buka ${arrow}</a>
+          <button class="remove" data-i="${i}" aria-label="Hapus">${cross}</button>
+        </li>`).join('');
+      list.querySelectorAll('.remove').forEach(b => b.addEventListener('click', () => {
+        state[key].splice(+b.dataset.i, 1); render(); markDirty();
+      }));
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const username = input.value.trim().replace(/^@+/, '');
+      if (!username) return input.focus();
+      if (state[key].length >= max) return toast(`Maksimal ${max} akun`);
+      if (state[key].some(a => a.platform === platform && a.username.toLowerCase() === username.toLowerCase())) return toast('Akun sudah ditambahkan');
+      state[key].push({ platform, username });
+      input.value = ''; render(); markDirty();
+    });
+    render();
+  });
+
+  // Collapse
+  const card = $('#profile');
+  const applyCollapse = () => {
+    card.classList.toggle('collapsed', state.collapsed);
+    $('#toggle').setAttribute('aria-expanded', !state.collapsed);
+  };
+  $('#toggle').addEventListener('click', () => {
+    state.collapsed = !state.collapsed; applyCollapse();
+    snapshot = JSON.stringify(Object.assign(JSON.parse(snapshot), { collapsed: state.collapsed }));
+    try { localStorage.setItem(KEY, JSON.stringify(Object.assign(JSON.parse(snapshot)))); } catch (e) {}
+  });
+  applyCollapse();
+
+  // Save
+  $('#save').addEventListener('click', () => {
+    snapshot = JSON.stringify(state);
+    try { localStorage.setItem(KEY, snapshot); } catch (e) {}
+    markDirty(); toast('Tersimpan ✓');
+  });
+
+  markDirty();
+</script>
+</body>
+</html>

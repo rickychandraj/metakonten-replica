@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sepri</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #202124; --fg: #e8eaed; --muted: #9aa0a6; --border: #5f6368;
+    --btn-bg: #303134; --footer-bg: #171717; --shadow: rgba(0,0,0,.5);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex; flex-direction: column;
+  }
+  header {
+    display: flex; justify-content: flex-end; align-items: center;
+    gap: 16px; padding: 12px 16px; font-size: 13px;
+  }
+  header a { color: var(--fg); text-decoration: none; }
+  header a:hover { text-decoration: underline; }
+  .apps {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  }
+  .apps:hover { background: rgba(60,64,67,.08); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: #1a73e8; color: #fff;
+    display: grid; place-items: center; font-size: 14px;
+  }
+  main {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    padding: 0 16px; margin-top: 12vh;
+  }
+  .logo { font-family: "Product Sans", Arial, sans-serif; font-size: 92px; font-weight: 400; letter-spacing: -4px; user-select: none; margin-bottom: 26px; }
+  .logo span:nth-child(1), .logo span:nth-child(4) { color: #4285f4; }
+  .logo span:nth-child(2), .logo span:nth-child(6) { color: #ea4335; }
+  .logo span:nth-child(3) { color: #fbbc05; }
+  .logo span:nth-child(5) { color: #34a853; }
+  form { width: 100%; max-width: 584px; }
+  .search {
+    display: flex; align-items: center; gap: 12px;
+    height: 46px; padding: 0 14px; border: 1px solid var(--border); border-radius: 24px;
+    background: var(--bg);
+  }
+  .search:hover, .search:focus-within { box-shadow: 0 1px 6px var(--shadow); border-color: transparent; }
+  .search input {
+    flex: 1; border: 0; outline: 0; background: transparent; color: var(--fg); font-size: 16px; min-width: 0;
+  }
+  .search svg { flex-shrink: 0; }
+  .clear { display: none; cursor: pointer; color: var(--muted); font-size: 22px; line-height: 1; padding: 0 4px; border-right: 1px solid var(--border); padding-right: 12px; }
+  .icon-btn { cursor: pointer; display: grid; place-items: center; }
+  .buttons { display: flex; justify-content: center; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .buttons button {
+    background: var(--btn-bg); color: var(--fg); border: 1px solid var(--btn-bg);
+    border-radius: 4px; font-size: 14px; padding: 0 16px; height: 36px; cursor: pointer;
+  }
+  .buttons button:hover { border-color: var(--border); box-shadow: 0 1px 1px rgba(0,0,0,.1); }
+  .lang { margin-top: 28px; font-size: 13px; color: var(--muted); text-align: center; }
+  .lang a { color: #8ab4f8; text-decoration: none; margin: 0 4px; }
+  .workspace {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
+    width: 100%; max-width: 584px; margin-top: 32px;
+  }
+  .workspace a {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 10px 4px; border-radius: 12px; color: var(--fg); text-decoration: none; font-size: 12px;
+  }
+  .workspace a:hover { background: var(--btn-bg); }
+  .workspace .ico { width: 40px; height: 40px; display: grid; place-items: center; }
+  .workspace img { width: 36px; height: 36px; object-fit: contain; }
+  .workspace b {
+    width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-size: 16px;
+  }
+  @media (max-width: 600px) { .workspace { grid-template-columns: repeat(4, 1fr); } }
+  footer { background: var(--footer-bg); color: var(--muted); font-size: 14px; }
+  footer .row { padding: 14px 24px; }
+  footer .row + .row { border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); text-decoration: none; margin-right: 24px; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .logo { font-size: 64px; letter-spacing: -3px; }
+    main { margin-top: 8vh; }
+    footer a { margin-right: 14px; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a href="https://mail.google.com" target="_blank">Gmail</a>
+    <a href="https://www.google.com/imghp" target="_blank">Gambar</a>
+    <div class="apps" title="Aplikasi Google">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+    </div>
+    <div class="avatar">S</div>
+  </header>
+
+  <main>
+    <div class="logo" aria-label="Sepri"><span>S</span><span>e</span><span>p</span><span>r</span><span>i</span></div>
+
+    <form id="f" action="https://www.google.com/search" method="get" target="_blank">
+      <div class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#9aa0a6"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input id="q" name="q" type="text" autocomplete="off" autofocus aria-label="Telusuri">
+        <span class="clear" id="clear" title="Hapus">&times;</span>
+        <span class="icon-btn" id="mic" title="Telusuri dengan suara">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285f4" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path fill="#34a853" d="M11 18.92h2V22h-2z"/><path fill="#fbbc05" d="M7 12H5c0 1.93.78 3.68 2.05 4.95l1.41-1.41A4.98 4.98 0 0 1 7 12z"/><path fill="#ea4335" d="M12 17a5 5 0 0 1-3.54-1.46l-1.41 1.41A6.98 6.98 0 0 0 12 19c1.93 0 3.68-.78 4.95-2.05l-1.41-1.41A4.98 4.98 0 0 1 12 17z"/><path fill="#4285f4" d="M17 12a5 5 0 0 1-1.46 3.54l1.41 1.41A6.98 6.98 0 0 0 19 12h-2z"/></svg>
+        </span>
+        <a class="icon-btn" href="https://lens.google.com" target="_blank" title="Telusuri dengan gambar">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285f4" d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path fill="#ea4335" d="M5 9V6a1 1 0 0 1 1-1h3V3H6a3 3 0 0 0-3 3v3h2z"/><path fill="#fbbc05" d="M5 15H3v3a3 3 0 0 0 3 3h3v-2H6a1 1 0 0 1-1-1v-3z"/><path fill="#34a853" d="M19 15v3a1 1 0 0 1-1 1h-3v2h3a3 3 0 0 0 3-3v-3h-2z"/><circle fill="#4285f4" cx="18" cy="6" r="2"/></svg>
+        </a>
+      </div>
+      <div class="buttons">
+        <button type="submit">Penelusuran Sepri</button>
+        <button type="button" id="lucky">Saya Lagi Beruntung</button>
+        <button type="button" id="ai">✨ Chat with AI</button>
+      </div>
+    </form>
+
+    <nav class="workspace" id="workspace" aria-label="Google Workspace"></nav>
+
+    <div class="lang">Sepri tersedia dalam bahasa:
+      <a href="https://www.google.com/?hl=en" target="_blank">English</a>
+      <a href="https://www.google.com/?hl=jw" target="_blank">Basa Jawa</a>
+      <a href="https://www.google.com/?hl=su" target="_blank">Basa Sunda</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="row">Indonesia</div>
+    <div class="row">
+      <div><a href="#">Tentang</a><a href="#">Periklanan</a><a href="#">Bisnis</a><a href="#">Cara kerja Penelusuran</a></div>
+      <div><a href="#">Privasi</a><a href="#">Persyaratan</a><a href="#">Setelan</a></div>
+    </div>
+  </footer>
+
+<script>
+  const q = document.getElementById('q');
+  const clear = document.getElementById('clear');
+  q.addEventListener('input', () => { clear.style.display = q.value ? 'block' : 'none'; });
+  clear.addEventListener('click', () => { q.value = ''; clear.style.display = 'none'; q.focus(); });
+
+  document.getElementById('f').addEventListener('submit', e => {
+    if (!q.value.trim()) e.preventDefault();
+  });
+
+  document.getElementById('lucky').addEventListener('click', () => {
+    const term = q.value.trim();
+    const url = term
+      ? 'https://www.google.com/search?btnI=1&q=' + encodeURIComponent(term)
+      : 'https://www.google.com/doodles';
+    window.open(url, '_blank');
+  });
+
+  // Deretan aplikasi Google Workspace
+  const apps = [
+    ['Gmail', 'gmail', 'https://mail.google.com'],
+    ['Drive', 'drive', 'https://drive.google.com'],
+    ['Docs', 'docs', 'https://docs.google.com/document'],
+    ['Sheets', 'sheets', 'https://docs.google.com/spreadsheets'],
+    ['Slides', 'slides', 'https://docs.google.com/presentation'],
+    ['Forms', 'forms', 'https://docs.google.com/forms'],
+    ['Calendar', 'calendar', 'https://calendar.google.com'],
+    ['Meet', 'meet', 'https://meet.google.com'],
+    ['Chat', 'chat', 'https://chat.google.com'],
+    ['Keep', 'keep', 'https://keep.google.com'],
+    ['Sites', 'sites', 'https://sites.google.com'],
+    ['Contacts', 'https://www.gstatic.com/images/branding/product/2x/contacts_2022_48dp.png', 'https://contacts.google.com'],
+    ['Tasks', 'https://www.gstatic.com/images/branding/productlogos/tasks/v10/192px.svg', 'https://tasks.google.com'],
+    ['Gemini', 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg', 'https://gemini.google.com'],
+  ];
+  const colors = ['#4285f4', '#ea4335', '#fbbc05', '#34a853'];
+  document.getElementById('workspace').innerHTML = apps.map(([name, id, href], i) => `
+    <a href="${href}" target="_blank" title="Google ${name}">
+      <span class="ico">
+        <img src="${id.startsWith('http') ? id : `https://www.gstatic.com/images/branding/product/2x/${id}_2020q4_48dp.png`}" alt=""
+             onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'${name[0]}',style:'background:${colors[i % 4]}'}))">
+      </span>
+      <span>${name}</span>
+    </a>`).join('');
+
+  // Chat with AI: buka Claude dengan isi kotak pencarian sebagai pertanyaan
+  document.getElementById('ai').addEventListener('click', () => {
+    const term = q.value.trim();
+    const url = term
+      ? 'https://claude.ai/new?q=' + encodeURIComponent(term)
+      : 'https://claude.ai/new';
+    window.open(url, '_blank');
+  });
+
+  // Pencarian suara (Chrome / Safari)
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  document.getElementById('mic').addEventListener('click', () => {
+    if (!SR) { alert('Browser ini tidak mendukung pencarian suara.'); return; }
+    const rec = new SR();
+    rec.lang = 'id-ID';
+    rec.onresult = ev => { q.value = ev.results[0][0].transcript; document.getElementById('f').requestSubmit(); };
+    rec.start();
+  });
+</script>
+</body>
+</html>
