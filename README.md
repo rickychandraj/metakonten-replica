@@ -1,6 +1,6 @@
 # Sepri Search
 
-Folder ini berisi **Sepri Search**, halaman pencarian pribadi bergaya Google dengan nama dan logo "Sepri".
+Folder ini berisi **Sepri Search**, halaman pencarian pribadi bergaya Perplexity dengan nama dan logo "Sepri".
 
 ## Isi folder
 
@@ -11,14 +11,16 @@ Folder ini berisi **Sepri Search**, halaman pencarian pribadi bergaya Google den
 
 ## Fitur
 
-- **Logo "Sepri"** berwarna ala Google
-- **Kotak pencarian**: ketik kata kunci lalu tekan Enter atau klik "Penelusuran Sepri"
-- **Saya Lagi Beruntung**: langsung membuka hasil teratas
-- **Chat with AI**: membuka Claude (claude.ai) di tab baru dengan isi kotak pencarian sebagai pertanyaan
-- **Logo Google Workspace** di bawah tombol (Gmail, Drive, Docs, Sheets, Slides, Forms, Calendar, Meet, Chat, Keep, Sites, Contacts, Tasks, Gemini): klik untuk membuka aplikasinya
+- **Tampilan bergaya Perplexity**: sidebar kiri (Beranda, Jelajahi, Ruang, Pustaka), judul "Apa yang ingin Anda ketahui?", dan kotak tanya besar
+- **Tiga mode** di kotak tanya, lalu tekan Enter atau tombol panah:
+  - **Cari**: hasil pencarian Google
+  - **Tanya AI**: membuka Claude (claude.ai) dengan pertanyaan Anda
+  - **Beruntung**: langsung membuka hasil teratas
+- **Saran pertanyaan** di bawah kotak, klik untuk mengisi otomatis
+- **Utas baru** (atau Ctrl/Cmd + I) untuk mengosongkan kotak
+- **Logo Google Workspace** di bagian "Aplikasi" (Gmail, Drive, Docs, Sheets, Slides, Forms, Calendar, Meet, Chat, Keep, Sites, Contacts, Tasks, Gemini): klik untuk membuka aplikasinya
 - **Pencarian suara** lewat ikon mikrofon, dalam Bahasa Indonesia (Chrome/Safari)
-- **Pencarian gambar** lewat ikon kamera (membuka Google Lens)
-- **Tombol ×** untuk menghapus teks pencarian
+- **Pencarian gambar** lewat ikon klip (membuka Google Lens)
 - **Mode gelap** selalu aktif
 - **Responsif**: tetap rapi di layar HP
 
@@ -36,4 +38,4 @@ open google-search.html
 
 ## Catatan
 
-Halaman ini memakai gaya tampilan Google. Gunakan untuk keperluan pribadi saja, dan jangan dipublikasikan seolah-olah layanan resmi Google.
+Halaman ini memakai gaya tampilan Perplexity dan logo aplikasi Google. Gunakan untuk keperluan pribadi saja, dan jangan dipublikasikan seolah-olah layanan resmi Google.
