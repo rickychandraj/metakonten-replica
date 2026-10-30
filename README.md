@@ -36,6 +36,10 @@ Klik dua kali `google-search.html`, atau jalankan perintah ini di Terminal:
 open google-search.html
 ```
 
+## Deploy ke Vercel
+
+Repo ini sudah siap di-deploy ke Vercel tanpa build step. `vercel.json` membuat alamat utama (`/`) langsung membuka `google-search.html`, dan `/dashboard` membuka `dashboard.html`. Setiap `git push` ke `main` otomatis memperbarui website.
+
 ## Catatan
 
 Halaman ini memakai gaya tampilan Perplexity dan logo aplikasi Google. Gunakan untuk keperluan pribadi saja, dan jangan dipublikasikan seolah-olah layanan resmi Google.
